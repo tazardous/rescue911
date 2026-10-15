@@ -1,0 +1,16 @@
+{
+  "name": "Rescue 911: Fire Truck Dino Rescue",
+  "short_name": "Rescue 911",
+  "description": "Kellan and Bernie drive the fire truck, collect dinosaur eggs and rescue big sister Diana from the bad dinos.",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "fullscreen",
+  "orientation": "landscape",
+  "background_color": "#3a0d0d",
+  "theme_color": "#B71C1C",
+  "icons": [
+    {"src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any"},
+    {"src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any"},
+    {"src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable"}
+  ]
+}
