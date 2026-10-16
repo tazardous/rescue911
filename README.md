@@ -1,10 +1,18 @@
 # Rescue 911: Fire Truck Dino Rescue
 
 A gentle platformer for Kellan (about age 4) and his dog Bernie. The bad dinos
-took big sister Diana! Kellan the firefighter and Bernie jump, collect dinosaur
-eggs, hose down fires and grumpy dinos, and drive the fire truck through five
-places to rescue her. At the end, the fire truck raises its ladder, Diana climbs
-down, and the dinos get their eggs back (they hatch!).
+took big sister Diana, Mom and Dad! Kellan the firefighter and Bernie jump,
+collect dinosaur eggs, hose down fires and grumpy dinos, and drive the fire
+truck through five places to rescue the whole family:
+
+- **Mom** is locked in a cage by the fire truck at the end of Volcano Valley (level 2).
+- **Dad** is locked in a cage by the fire truck at the end of Dino Town (level 4).
+- **Diana** is at the top of Grumpy Volcano (level 5).
+
+When Kellan reaches the truck with enough eggs, the cage pops open and Mom or
+Dad hops into the fire truck and rides along for the rest of the adventure. At
+the end, the truck raises its ladder, Diana climbs down, the whole family
+celebrates, and the dinos get their eggs back (they hatch!).
 
 All the characters, art, levels and music are original. It's one self-contained
 `index.html` with no build step. The only network request is the Press Start 2P
@@ -38,10 +46,10 @@ for putting out every fire.
 ## Levels
 
 1. Dino Meadow
-2. Volcano Valley (fires and lava pits)
+2. Volcano Valley (fires and lava pits) - rescue Mom
 3. Jungle Swamp (hydrant bounces)
-4. Dino Town
-5. Grumpy Volcano (Big Grumpasaur, then the ladder rescue)
+4. Dino Town - rescue Dad
+5. Grumpy Volcano (Big Grumpasaur, then the ladder rescue of Diana)
 
 ## Difficulty
 
@@ -70,7 +78,7 @@ The app opens full screen in landscape and runs with no internet after that.
 
 ## Updating
 
-Edit the files, change `CACHE` in `sw.js` (for example `r911-v2`), then push. The
+Edit the files, change `CACHE` in `sw.js` (for example `r911-v3`), then push. The
 next time the phone opens the game online, it picks up the new version.
 
 ## Making levels

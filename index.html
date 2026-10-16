@@ -180,6 +180,15 @@ const DIANA_HEAD=HEAD.map((r,j)=>{
   return a.join('');
 });
 const DI=frames(DIANA_HEAD.map(r=>[...r].map(ch=>({y:'h',Y:'H',b:'f'})[ch]||ch).join('')),{c:'u',C:'U',p:'q',g:'w'},-1);
+// Mom and Dad: grown-ups are taller, so their legs are longer
+Object.assign(PAL,{'1':'#4A2C14','2':'#7A4A24','3':'#2E7D32','4':'#66BB6A','5':'#2B1D12','6':'#4E3524','7':'#1565C0','8':'#64B5F6','9':'#A1887F'});
+const tall=rows=>rows.slice(0,9).concat([rows[8],rows[8],rows[8]],rows.slice(9));
+function adultFrames(head,map){ const mk=b=>pair(spr(head.concat(bodyMap(tall(b),map,-1)))); return {idle:mk(BODY_IDLE),walk:mk(BODY_WALK),jump:mk(BODY_JUMP)}; }
+const MOM=adultFrames(DIANA_HEAD.map(r=>[...r].map(ch=>({y:'2',Y:'1',h:'2',H:'1',b:'f'})[ch]||ch).join('')),{c:'3',C:'4',p:'3',g:'s',B:'1'});
+const DAD=adultFrames(HEAD.map((r,j)=>j===9?"..kSsss5555ssk..":r).map(r=>[...r].map(ch=>({y:'6',Y:'5',b:'f'})[ch]||ch).join('')),{c:'7',C:'8',p:'9',g:'s',B:'D'});
+// who gets rescued where (level index)
+const FAMILY={mom:{fr:MOM,name:'MOM',lvl:1},dad:{fr:DAD,name:'DAD',lvl:3}};
+const ridersFor=(i,incl)=>Object.values(FAMILY).filter(m=>m.lvl<i||(incl&&m.lvl===i)).map(m=>m.fr);
 
 // Bernie: brown and cream pup with a red collar and a tiny fire helmet
 const PUP=["..kk......kk....",".keek....keek...",".keeEkkkkEeek...","..kEEEEEEEEk....","..kEwkEEEwkEk...","..kEEEEEEEEEk...","..kEEttkkttEk...","...kEtttttEk....","....krrrrrk.....","...kEEEEEEEk..k.","..kEEttttEEEkkek","..kEEttttEEEEek.","..kEEEEEEEEEEk..","..kEk.kEk.kEk...","..kkk.kkk.kkk..."];
@@ -253,17 +262,17 @@ const LEVELS=[
   eggs:[[9,7],[13,5],[25,5],[32,5],[40,3],[47,5],[58,4],[84,7]], bones:[[19,7],[36,4],[63,7],[79,7]],
   crits:[[18,'raptor',0],[42,'raptor',1],[62,'raptor',0],[86,'trike',0],[54,'ptero',2]],
   fires:[28,64,90], springs:[40], flags:[22,44,66],
-  tip:'FIND THE DINO EGGS, THEN JUMP IN THE FIRE TRUCK!',
-  say:n=>`Oh no! The bad dinos took Diana! Kellan and Bernie to the rescue! Find ${n} dinosaur eggs, then jump in the fire truck.`,
-  next:'THE BAD DINOS TOOK DIANA TO VOLCANO VALLEY!'},
+  tip:'THE BAD DINOS TOOK DIANA, MOM AND DAD! FIND EGGS, THEN JUMP IN THE FIRE TRUCK!',
+  say:n=>`Oh no! The bad dinos took Diana, Mom and Dad! Kellan and Bernie to the rescue! Find ${n} dinosaur eggs, then jump in the fire truck.`,
+  next:'THE BAD DINOS TOOK MOM TO VOLCANO VALLEY!'},
  {name:'VOLCANO VALLEY',theme:'volcano',tune:'volcano',W:108,
   pits:[[16,3],[34,2],[50,3],[66,3],[84,2]], plats:[[20,23,6],[27,30,5],[38,41,6],[43,46,4],[56,59,6],[60,63,5],[72,75,6],[77,80,5],[88,91,6]],
   eggs:[[8,7],[17,5],[29,4],[44,3],[51,5],[62,4],[70,3],[90,5]], bones:[[25,7],[40,5],[58,5],[96,7]],
   crits:[[10,'raptor',0],[26,'raptor',0],[47,'trike',0],[63,'raptor',1],[79,'raptor',0],[95,'trike',1],[36,'ptero',1],[58,'ptero',2]],
   fires:[14,32,48,74,93], springs:[12,70], flags:[20,37,54,82],
-  tip:'PRESS SPRAY TO PUT OUT FIRES WITH YOUR HOSE!',
-  say:n=>`Volcano Valley! The bad dinos made fires. Press spray to put them out with your hose! Find ${n} eggs.`,
-  next:'NOW THEY ARE HIDING IN THE JUNGLE SWAMP!'},
+  tip:'MOM IS BY THE FIRE TRUCK! PRESS SPRAY TO PUT OUT FIRES!',captive:'mom',
+  say:n=>`Volcano Valley! Mom is waiting at the fire truck! The bad dinos made fires. Press spray to put them out with your hose! Find ${n} eggs.`,
+  next:'NEXT STOP: THE JUNGLE SWAMP!'},
  {name:'JUNGLE SWAMP',theme:'jungle',tune:'jungle',W:112,
   pits:[[14,3],[28,3],[42,3],[58,3],[74,3],[90,3]], plats:[[18,21,6],[23,26,5],[32,35,6],[46,49,6],[51,54,4],[62,65,6],[67,70,5],[78,81,6],[94,97,5]],
   eggs:[[10,7],[15,5],[24,4],[38,3],[52,3],[59,5],[68,4],[95,4]], bones:[[20,5],[34,5],[63,5],[86,3]],
@@ -271,14 +280,14 @@ const LEVELS=[
   fires:[26,55,80,98], springs:[38,86], flags:[12,40,56,72,88],
   tip:'JUMP ON A HYDRANT TO BOUNCE UP HIGH!',
   say:n=>`Jungle Swamp! Jump on a fire hydrant to bounce super high! Find ${n} eggs.`,
-  next:'THE BAD DINOS RAN INTO DINO TOWN!'},
+  next:'DAD IS IN DINO TOWN! HURRY!'},
  {name:'DINO TOWN',theme:'town',tune:'town',W:116,
   pits:[[20,2],[36,3],[54,3],[70,2],[88,3]], plats:[[10,13,6],[24,27,6],[29,32,4],[40,43,6],[45,48,5],[58,61,6],[63,66,5],[76,79,6],[81,84,4],[94,97,6]],
   eggs:[[11,5],[21,5],[30,3],[46,4],[50,3],[64,4],[82,3],[100,3]], bones:[[26,5],[42,5],[60,5],[95,5]],
   crits:[[14,'raptor',0],[28,'raptor',1],[33,'raptor',0],[46,'trike',0],[66,'trike',1],[80,'raptor',0],[92,'raptor',0],[104,'trike',1],[38,'ptero',1],[74,'ptero',0],[96,'ptero',2]],
   fires:[18,34,57,74,92,106], springs:[16,50,100], flags:[22,39,52,68,86],
-  tip:'BAD DINOS IN TOWN! SPRAY THEM OR JUMP ON THEM!',
-  say:n=>`Dino Town! Spray the bad dinos with water, or jump on them, and they run away! Find ${n} eggs.`,
+  tip:'DAD IS BY THE FIRE TRUCK! SPRAY THE BAD DINOS OR JUMP ON THEM!',captive:'dad',
+  say:n=>`Dino Town! Dad is waiting at the fire truck! Spray the bad dinos with water, or jump on them, and they run away! Find ${n} eggs.`,
   next:'DIANA IS AT GRUMPY VOLCANO! GO GO GO!'},
  {name:'GRUMPY VOLCANO',theme:'peak',tune:'volcano',W:128,
   pits:[[16,3],[32,3],[48,3],[64,3],[80,3]], plats:[[20,23,6],[26,29,5],[36,39,6],[41,44,4],[52,55,6],[57,60,5],[68,71,6],[73,76,4],[84,87,6]],
@@ -287,7 +296,7 @@ const LEVELS=[
   fires:[14,35,51,67,90], springs:[12,62], flags:[19,31,47,61,79,92],
   boss:{arena:94,wall:116},
   tip:'DIANA IS AT THE TOP! COOL OFF BIG GRUMPASAUR!',
-  say:n=>`Grumpy Volcano! Diana is at the very end. Find ${n} eggs and cool off Big Grumpasaur with your hose!`,
+  say:n=>`Grumpy Volcano! Mom and Dad are riding along. Diana is at the very end. Find ${n} eggs and cool off Big Grumpasaur with your hose!`,
   next:''},
 ];
 
@@ -622,15 +631,19 @@ function updCrits(){
 }
 function startDrive(){
   state='drive'; LV.drive={t:0,x:LV.truckX,v:0}; sfx('win'); burst(P.x+5,P.y,30,CONFETTI,2.5,50);
-  say(lvl===LEVELS.length-1?'Everybody in the fire truck! Let\'s go save Diana!':'Into the fire truck! Nee naw nee naw!');
+  const cap=LEVELS[lvl].captive;
+  say(cap?`${cap==='mom'?'Mom':'Dad'}, hop in the fire truck!`:lvl===LEVELS.length-1?'Everybody in the fire truck! Let\'s go save Diana!':'Into the fire truck! Nee naw nee naw!');
 }
 function updDrive(){
   const dr=LV.drive; dr.t++;
-  if(dr.t>30){ dr.v=Math.min(4,dr.v+0.08); dr.x+=dr.v; }
+  const cap=LEVELS[lvl].captive, go=cap?62:30;
+  if(cap&&dr.t===12){ burst((LV.W-2.6)*T+14,LV.top*T-50,30,CONFETTI,2.5,50); sfx('cheer'); }
+  if(cap&&dr.t===52){ sfx('egg'); say(`You saved ${cap==='mom'?'Mom':'Dad'}!`); }
+  if(dr.t>go){ dr.v=Math.min(4,dr.v+0.08); dr.x+=dr.v; }
   if(dr.t%20===0) sfx('siren',(dr.t/20)&1);
   const target=clamp(dr.x+40-VW/2,0,Math.max(0,LV.W*T-VW)); camX+=(target-camX)*0.1;
   updFx();
-  if(dr.t>150){ finishLevel(); }
+  if(dr.t>(cap?180:150)){ finishLevel(); }
 }
 function updCam(){
   const target=clamp(P.x+P.w/2-VW/2+P.face*22,0,Math.max(0,LV.W*T-VW));
@@ -679,7 +692,7 @@ function updEnding(){
   endT++; updFx();
   if(endT<110&&endT%20===0) sfx('siren',(endT/20)&1);
   if(endT===176){ burst(VW-48,46,30,CONFETTI,2.5,50); sfx('cheer'); say('Diana! Climb down the ladder!'); }
-  if(endT===300){ sfx('win'); say('Hooray! You saved Diana! And the dinosaurs got all their eggs back. Thank you, Kellan and Bernie!'); }
+  if(endT===300){ sfx('win'); say('Hooray! You saved Diana, Mom and Dad! And the dinosaurs got all their eggs back. Thank you, Kellan and Bernie!'); }
   if(endT>300&&endT%10===0) burst(rnd(20,VW-20),rnd(10,60),8,CONFETTI,2.5,60);
   if([330,350,370,390].includes(endT)) sfx('egg');
   if(endT>420&&(confirmHit()||(hit.has('tap')&&!tapUsed))) state='title';
@@ -804,6 +817,7 @@ function drawTruck(x,y,o){
   rect('#000',x+60,y-1,16,4); rect(on?'#FF2020':'#8A1010',x+61,y,7,2); rect(on?'#5A8AFF':'#20307A',x+68,y,7,2);
   if(o.lights){ g.fillStyle=on?'rgba(255,40,40,.25)':'rgba(80,130,255,.25)'; circle(on?x+64:x+72,y+1,9); }
   if(ang===0) ladder();
+  if(o.riders) o.riders.forEach((fr,i)=>{ const rx=x+2+i*16, hop=o.hop?Math.round(Math.abs(Math.sin(t*0.15+i))*5):0; g.save(); g.beginPath(); if(o.hop) g.rect(rx-1,y-20,18,32); else g.rect(rx-1,y-8,18,15); g.clip(); g.drawImage((o.hop?fr.jump:fr.idle).r,rx,o.hop?y-12-hop:y-6); g.restore(); });
   if(o.bernie){ g.save(); g.beginPath(); g.rect(x+34,y-6,16,16); g.clip(); g.drawImage(PUPS.shut.r,x+34,y-4); g.restore(); }
   if(o.eggs){ for(let k=0;k<Math.min(o.eggs,8);k++) g.drawImage(EGGS[k%3],x+4+k*6,y+3,7,9); }
   const rot=(o.rot||0);
@@ -841,13 +855,15 @@ function drawEnts(ox){
   const L=LEVELS[lvl], top=LV.top*T;
   // in the last level Diana waits in a cage on a rock tower behind the fire truck
   if(L.boss){ const tx=(LV.W-2.6)*T-ox; if(tx>-60&&tx<VW+60){ rect('#000',tx-1,40,30,top-40); rect('#5A4060',tx,41,28,top-41); for(let k=0;k<6;k++) rect('#3A2A44',tx+(k%2)*12+3,50+k*14,8,3);
-      drawCage(tx-2,8,true); } }
+      drawCage(tx-2,8,DI); } }
+  if(L.captive){ const tx=(LV.W-2.6)*T-ox, py=top-30, freed=state==='drive'&&LV.drive.t>=12; if(tx>-60&&tx<VW+60){ rect('#000',tx-1,py,30,top-py); rect('#6A5A4A',tx,py+1,28,top-py-1); rect('#4A3A2A',tx+4,py+10,8,3); rect('#4A3A2A',tx+15,py+20,8,3);
+      drawCage(tx-2,py-35,freed?null:FAMILY[L.captive].fr,freed); } }
   for(const f of LV.flags){ const x=f.x-ox; if(x<-20||x>VW+20) continue; rect('#6B3F1C',x+7,top-28,2,28); rect(f.on?'#E53935':'#999',x+9,top-28,10,8); rect(f.on?'#fff':'#bbb',x+12,top-26,4,1); rect(f.on?'#fff':'#bbb',x+13,top-27,2,4); }
   for(const s of LV.springs){ const x=s.x-ox; if(x<-20||x>VW+20) continue; const sq=s.squash>0?2:0;
     if(s.spout>0){ for(let k=0;k<4;k++){ g.fillStyle=pick(WATER); circle(x+6+rnd(-3,3),s.y-4-((s.spout*3+k*9)%40),2+rnd(0,1.5)); } }
     g.drawImage(HYDRANT,Math.round(x),Math.round(s.y+sq),12,13-sq); }
   for(const f of LV.fires){ const x=f.x-ox; if(x<-30||x>VW+30) continue; drawFire(x,f.y,f); }
-  drawTruck(LV.truckX-ox,top-40,{lights:true,eggs:LV.got});
+  drawTruck(LV.truckX-ox,top-40,{lights:true,eggs:LV.got,riders:ridersFor(lvl)});
   for(const e of LV.eggs) if(!e.got){ const x=e.x-ox; if(x<-12||x>VW+12) continue; const by=Math.round(e.y+Math.sin(t*0.08+e.ph)*1.5); g.drawImage(EGGS[e.v],Math.round(x),by); if(((t+e.ph*20)|0)%50<4) rect('#fff',x+2,by+2,2,2); }
   for(const b of LV.bones) if(!b.got){ const x=b.x-ox; if(x<-12||x>VW+12) continue; g.drawImage(BONE,Math.round(x),Math.round(b.y+Math.sin(t*0.1+b.x)*1)); }
   if(LV.boss) drawBoss(LV.boss,ox);
@@ -857,14 +873,16 @@ function drawEnts(ox){
   if(!driving&&hist.length>14){ const h=hist[hist.length-14], sp=(Math.abs(P.vx)>0.3)&&((t>>3)&1)?1:0, im=barkT>0?PUPS.open:PUPS.shut, bx=Math.round(h.x-ox)-3, by=Math.round(h.y+P.h-15-sp);
     g.drawImage((P.x>h.x+2||(P.x>=h.x-2&&P.face>0))?im.r:im.l,bx,by); if(barkT>0&&((barkT>>3)&1)) post.push(()=>txt('WOOF!',bx+8,by-10,6,'#fff','center')); }
   if(!driving&&!(P.inv>0&&((t>>2)&1))) drawHero(P.x-ox,P.y,P.face,Math.abs(P.vx)>0.3,!P.ground);
-  if(driving){ const dr=LV.drive; drawTruck(dr.x-ox,top-40,{lights:true,kellan:true,bernie:true,eggs:LV.got,rot:dr.x*0.3}); if(dr.t>30) for(let k=0;k<2;k++) parts.push({x:dr.x+2,y:top-6,vx:-rnd(0.5,1.5),vy:-rnd(0,0.5),life:20,c:'#ccc',g:0}); }
+  if(driving){ const dr=LV.drive, cap=L.captive, inTruck=cap&&dr.t>=52; drawTruck(dr.x-ox,top-40,{lights:true,kellan:true,bernie:true,eggs:LV.got,rot:dr.x*0.3,riders:ridersFor(lvl,inTruck)});
+    if(cap&&dr.t>=12&&dr.t<52){ const k=(dr.t-12)/40, fr=FAMILY[cap].fr.jump.l, sx=(LV.W-2.6)*T+6, sy=top-30-35+5, ex=dr.x+2+ridersFor(lvl).length*16, ey=top-40-6, x=sx+(ex-sx)*k, y=sy+(ey-sy)*k-Math.sin(k*Math.PI)*30; g.drawImage(fr,Math.round(x-ox),Math.round(y)); } if(dr.t>30) for(let k=0;k<2;k++) parts.push({x:dr.x+2,y:top-6,vx:-rnd(0.5,1.5),vy:-rnd(0,0.5),life:20,c:'#ccc',g:0}); }
   for(const d of drops){ g.fillStyle=(t+d.x)%3<1?'#fff':'#7EC8FF'; g.fillRect(Math.round(d.x-ox)-1,Math.round(d.y)-1,3,3); }
   for(const p of parts){ g.fillStyle=p.c; const s=p.life>14?2:1; g.fillRect(((p.x-ox)|0),(p.y|0),s,s); }
   for(const x of texts){ const tx=x.x-ox, ty=x.y, c=x.c, s=x.s; post.push(()=>txt(s,tx,ty,6,c,'left')); }
 }
-function drawCage(x,y,withDiana){
-  if(withDiana){ const f=((t>>4)&1)?DI.jump.r:DI.idle.r; g.drawImage(f,x+8,y+8); if(((t>>5)&1)) post.push(()=>txt('HELP!',x+16,y-6,6,'#fff','center')); }
-  rect('#000',x,y+31,32,3); rect('#000',x,y,32,3); for(let k=0;k<6;k++) rect('#555',x+1+k*6,y+2,2,30); rect('#888',x+1,y+1,30,1);
+function drawCage(x,y,who,open){
+  if(who){ const f=((t>>4)&1)?who.jump.r:who.idle.r; g.drawImage(f,x+8,y+32-f.height); if(((t>>5)&1)) post.push(()=>txt('HELP!',x+16,y-6,6,'#fff','center')); }
+  rect('#000',x,y+31,32,3); rect('#000',x,y,32,3); for(let k=0;k<6;k++) if(!open||k===0||k===5) rect('#555',x+1+k*6,y+2,2,30); rect('#888',x+1,y+1,30,1);
+  if(open){ rect('#555',x-10,y+4,10,2); rect('#555',x-10,y+28,10,2); for(let k=0;k<3;k++) rect('#555',x-10+k*4,y+4,2,26); }
 }
 function drawHUD(){
   rect('#5A0E0E',0,PH,VW,VH-PH); rect('#E53935',0,PH,VW,1);
@@ -965,12 +983,12 @@ function drawLevelEnd(){
   const L=LEVELS[lvl], th=THEMES[L.theme]; drawBG(th,Math.floor(t*1.2));
   rect('#444',0,PH-26,VW,60); rect('#fff',0,PH-26,VW,2); for(let x=wrapX(-t*2.4,40)-40;x<VW;x+=40) rect('#FFE14D',x,PH-12,20,2);
   const tx=Math.min(VW/2-40,-90+endT*2.2);
-  drawTruck(tx,PH-26-38,{lights:true,kellan:true,bernie:true,eggs:lastResult.eggs,rot:t*0.4});
+  drawTruck(tx,PH-26-38,{lights:true,kellan:true,bernie:true,eggs:lastResult.eggs,rot:t*0.4,riders:ridersFor(lvl,true)});
   for(const p of parts){ g.fillStyle=p.c; g.fillRect(p.x|0,p.y|0,2,2); }
   const labels=['RESCUE RUN','ALL '+lastResult.eggsAll+' EGGS','ALL FIRES OUT'];
   for(let k=0;k<3;k++) starPoly(VW/2+(k-1)*30,64,11,k<lastResult.stars?'#FFE14D':'#7A6FA0');
   post.push(()=>{
-    txt('NEE-NAW! YOU DID IT!',VW/2,8,10,'#FFE14D','center');
+    txt(L.captive?`YOU SAVED ${FAMILY[L.captive].name}!`:'NEE-NAW! YOU DID IT!',VW/2,8,10,'#FFE14D','center');
     wrap(L.next,30).forEach((l,i)=>txt(l,VW/2,26+i*11,7,'#fff','center'));
     txt('EGGS '+lastResult.eggs+'/'+lastResult.eggsAll+'   FIRES '+lastResult.fires+'/'+lastResult.firesAll+'   BONES '+lastResult.bones,VW/2,82,6,'#fff','center');
     txt(labels.filter((_,k)=>k<lastResult.stars).join(' + '),VW/2,94,5,'#FFE14D','center');
@@ -991,21 +1009,21 @@ function drawEnding(){
   const nx=14; rect('#6B3F1C',nx,gy-6,64,7); rect('#8B5A2B',nx+2,gy-8,60,3);
   for(let i=0;i<4;i++){ const hatch=endT>330+i*20, ex=nx+6+i*14; if(hatch){ const bb=BABIES[i]; g.drawImage(bb.r,ex-2,gy-20-(((t>>3)+i)&1)*2); rect('#FFF6DC',ex,gy-8,10,4); } else g.drawImage(EGGS[i%3],ex,gy-18); }
   if(endT>290){ const im=GRUMP.calm.l; g.drawImage(im,0,0,36,35,nx+70+Math.max(0,60-(endT-290)),gy-50,50,49); }
-  drawTruck(tx,ty,{lights:true,kellan:endT<200,bernie:endT<200,ang:-0.0001+ang,len,rot:tx*0.3});
+  drawTruck(tx,ty,{lights:true,kellan:endT<200,bernie:endT<200,ang:-0.0001+ang,len,rot:tx*0.3,riders:[MOM,DAD],hop:endT>270});
   // Diana: in the cage, then down the ladder, then celebrating
   let dX=cageX+8, dY=cageY+8, inCage=true;
-  if(endT>175){ inCage=false; const c=clamp((endT-175)/90,0,1); dX=tipX-8+(pvx+6-tipX+8)*c; dY=tipY-26+(ty+12-24-(tipY-26))*c; }
+  if(endT>175){ inCage=false; const c=clamp((endT-175)/90,0,1); dX=tipX-8+(pvx+28-tipX+8)*c; dY=tipY-26+(ty+12-24-(tipY-26))*c; }
   const cele=endT>270, hop=cele?Math.abs(Math.sin(endT*0.15))*8:0;
   const drawD=()=>g.drawImage((cele||inCage&&((t>>4)&1))?DI.jump.r:DI.idle.r,Math.round(dX),Math.round(dY-hop));
   if(inCage) drawD();
-  drawCage(cageX,cageY,false); if(endT>175){ rect('#5A4060',cageX+10,cageY+31,12,3); }
+  drawCage(cageX,cageY,null); if(endT>175){ rect('#5A4060',cageX+10,cageY+31,12,3); }
   if(!inCage) drawD();
   if(endT>=200){ g.drawImage(K.jump.r,Math.round(tx+84),Math.round(gy-24-Math.abs(Math.cos(endT*0.15))*8)); g.drawImage(PUPS.open.r,Math.round(tx+99),Math.round(gy-15-Math.abs(Math.sin(endT*0.2))*5)); }
   for(const p of parts){ g.fillStyle=p.c; g.fillRect(p.x|0,p.y|0,2,2); }
   post.push(()=>{
     if(endT<175) txt('HANG ON, DIANA!',VW/2,8,10,'#FFE14D','center');
     else if(endT<290) txt('DOWN THE LADDER!',VW/2,8,10,'#FFE14D','center');
-    else { txt('HOORAY!',VW/2,6,16,'#FFE14D','center'); txt('DIANA IS SAFE!',VW/2,28,8,'#fff','center'); if(endT>330) txt('THE DINOS GOT THEIR EGGS BACK!',VW/2,42,6,'#FFE0F0','center'); if(endT>380) txt('THANK YOU KELLAN AND BERNIE!',VW/2,54,6,'#8EE08E','center'); }
+    else { txt('HOORAY!',VW/2,6,16,'#FFE14D','center'); txt('THE WHOLE FAMILY IS SAFE!',VW/2,28,8,'#fff','center'); if(endT>330) txt('THE DINOS GOT THEIR EGGS BACK!',VW/2,42,6,'#FFE0F0','center'); if(endT>380) txt('THANK YOU KELLAN AND BERNIE!',VW/2,54,6,'#8EE08E','center'); }
     if(endT>420&&((t>>4)&1)) txt(coarse?'TAP TO PLAY AGAIN':'PRESS SPACE',VW/2,PH+6,7,'#fff','center');
   });
   blitFlush();
